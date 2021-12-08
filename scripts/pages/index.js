@@ -1,3 +1,5 @@
+var arrayPhotographers = [];
+
 async function getPhotographers() {
     // Penser à remplacer par les données récupérées dans le json
     var request = new XMLHttpRequest();
@@ -11,8 +13,10 @@ async function getPhotographers() {
     //     }
     // }
     const photographers = [my_JSON_object.photographers];
-    
-    console.log(photographers)
+
+    // console.log(photographers)
+
+
     return ({
         photographers: [...photographers[0]]
     })
@@ -20,6 +24,9 @@ async function getPhotographers() {
 
 async function displayData(photographers) {
     const photographersSection = document.querySelector(".photographer_section");
+
+    // arrayPhotographers = [photographers];
+
 
     photographers.forEach((photographer) => {
         const photographerModel = photographerFactory(photographer);
