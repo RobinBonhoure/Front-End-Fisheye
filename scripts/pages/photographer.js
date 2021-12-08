@@ -11,21 +11,17 @@ function openNew(value, photos) {
 
     const picture = `assets/photographers/${portrait}`;
 
-    // function printPhotos() {
-    //     const article = document.createElement( 'article' );
-    //     const h2 = document.createElement( 'h2' );
-    //     h2.textContent = name;
-    //     h2.dataset.id = id;
-    //     h2.className = "showPhotos";
-    //     article.appendChild(h2);
-    //     return (article);
-    // }
-    // return { name, picture, getUserCardDOM }
+    function printPhotos() {
+        const article = document.createElement( 'article' );
+        const h2 = document.createElement( 'h2' );
+        h2.textContent = name;
+        h2.dataset.id = id;
+        h2.className = "showPhotos";
+        article.appendChild(h2);
+        return (article);
+    }
+    return {printPhotos}
 }
-
-    // window.location.href = "./photographer.html";
-// }
-
 
 async function getPhotos() {
     var request = new XMLHttpRequest();
@@ -41,11 +37,17 @@ async function getPhotos() {
 }
 
 async function displayData2(photos) {
+    const photographeHeader = document.querySelector(".photographe-header");
     // // launch function with open new location
     buttons.forEach((btn) => {
         btn.addEventListener("click", function() {
             let targetClick = this.getAttribute("data-id");
-            openNew(targetClick, photos);
+            const printDOM = openNew(targetClick, photos);
+            window.location.href = "./photographer.html";
+            setTimeout( function() {
+                photographeHeader.appendChild(printDOM);
+                console.log(photographeHeader)
+            },2000)
         });
     });
 };
