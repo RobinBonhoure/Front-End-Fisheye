@@ -1,61 +1,84 @@
 //Mettre le code JavaScript lié à la page photographer.html
-let clickH2 = document.querySelector('#clickH2');
-let clickImg = document.querySelector('#clickImg');
 
-let buttons = document.querySelectorAll('.showPhotos')
+let url = new URL(window.location.href);
+let photographerIdUrl = url.searchParams.get("id");
+
+async function openNew(photographers, photos) {
+
+    // photographers
+    const selectedPhotographer = await filterById(photographers, photographerIdUrl);
+    const { name, id, city, country, tagline, price, portrait } = selectedPhotographer;
+
+    // photos du photographe
+    const selectedPhotos = photos.filter(obj => obj.photographerId == photographerIdUrl);
+
+    const picturePhotographe = `assets/photographers/${portrait}`;
+
+    // function printPhotos() {
+    document.getElementById("h2").innerHTML = name;
+    document.getElementById("p1").innerHTML = city + ', ' + country;
+    document.getElementById("p2").innerHTML = tagline;
+    document.getElementById("img1").src = picturePhotographe;
+
+    
+    const photosSection = document.querySelector("#photo-grid");
+
+    
+    console.log(selectedPhotos)
 
 
-function openNew(value, photos) {
-    const { name, id, city, country, tagline, price, portrait } = photos[0];
-    const { idPhoto, photographerId, title, image, likes, date, pricePhoto } = photos[1];
-
-    const picture = `assets/photographers/${portrait}`;
-
-    function printPhotos() {
-        const article = document.createElement( 'article' );
-        const h2 = document.createElement( 'h2' );
-        h2.textContent = name;
-        h2.dataset.id = id;
-        h2.className = "showPhotos";
-        article.appendChild(h2);
-        return (article);
-    }
-    return {printPhotos}
-}
-
-async function getPhotos() {
-    var request = new XMLHttpRequest();
-    request.open("GET", "data/photographers.json", false);
-    request.send(null);
-    var my_JSON_object = JSON.parse(request.responseText);
-    const photos = [my_JSON_object.media];
-    const photographers = [my_JSON_object.photographers];
-
-    return ({
-        photos: [...photographers,...photos]
+    selectedPhotos.forEach((photos) => {
+        const { photographerId, title, image, likes, date, pricePhoto } = photos;
+        if (image) {
+            // const pictures = `assets/images/${name}/${image}`;
+            const pictures = `assets/images/${image}`;
+            const img = document.createElement('img');
+            img.setAttribute("src", pictures);
+            img.dataset.id = id;
+            img.className = "photo";
+            const p1 = document.createElement('p');
+            const p2 = document.createElement('p');
+            p1.textContent = city + ", " + country;
+            p1.className = "city";
+            p2.textContent = tagline;
+            p2.className = "tagline";;
+            photosSection.appendChild(img);
+            // photosSection.appendChild(p1);
+            // article.appendChild(p2);
+        }
     })
 }
 
-async function displayData2(photos) {
-    const photographeHeader = document.querySelector(".photographe-header");
-    // // launch function with open new location
-    buttons.forEach((btn) => {
-        btn.addEventListener("click", function() {
-            let targetClick = this.getAttribute("data-id");
-            const printDOM = openNew(targetClick, photos);
-            window.location.href = "./photographer.html";
-            setTimeout( function() {
-                photographeHeader.appendChild(printDOM);
-                console.log(photographeHeader)
-            },2000)
-        });
-    });
-};
+    function filterById(jsonObject, id) {
+        return jsonObject.filter(function (jsonObject) {
+            return (jsonObject['id'] == id);
+        })[0];
+    }
 
-async function init2() {
-    // Récupère les datas des photographes
-    const { photos } = await getPhotos();
-    displayData2(photos);
-};
+    async function getPhotos() {
+        // FETCH
 
-init2();
+        await fetch('data/photographers.json')
+            .then(response => response.json())
+            .then(data => {
+                arrayPhotographers = data;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+        return (arrayPhotographers)
+    }
+
+    async function displayData2(photos) {
+        const photographeHeader = document.querySelector(".photographe-header");
+        openNew(arrayPhotographers.photographers, arrayPhotographers.media);
+    };
+
+    async function init2() {
+        // Récupère les datas des photographes
+        const { photos } = await getPhotos();
+        displayData2(photos);
+    };
+
+    init2();

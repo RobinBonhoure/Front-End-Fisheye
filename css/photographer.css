@@ -27,6 +27,8 @@
     height: 25vw;
     background-color: rgb(173, 173, 173);
     margin-bottom: 5vw;
+    object-fit: cover;
+    object-position: center center;
 }
 
 .photo-name {
@@ -39,6 +41,32 @@
     position: absolute;
     bottom: -60px;
     right: 0;
+}
+
+#h2 {
+    color: #D3573C;
+    font-size: 64px;
+    line-height: 84px;
+    margin: 0;
+}
+#p1{
+    color: #901C1C;
+    font-size: 24px;
+    line-height: 32px;
+    margin-top: 20px;
+}
+#p2{
+    font-size: 18px;
+    line-height: 24px;
+    color: #757575;
+    margin-top: 20px;
+}
+#img1 {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center center;
 }
 
 /* CONTACT */

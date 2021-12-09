@@ -1,25 +1,22 @@
-var arrayPhotographers = [];
+let arrayPhotographers = [];
+let buttons;
 
 async function getPhotographers() {
     // Penser à remplacer par les données récupérées dans le json
-    var request = new XMLHttpRequest();
-    request.open("GET", "data/photographers.json", false);
-    request.send(null);
-    var my_JSON_object = JSON.parse(request.responseText);
-    // request.onreadystatechange = function () {
-    //     if (request.readyState === 4 && request.status === 200) {
-    //         var my_JSON_object = JSON.parse(request.responseText);
-    //         console.log(my_JSON_object);
-    //     }
-    // }
-    const photographers = [my_JSON_object.photographers];
 
-    // console.log(photographers)
+    // FETCH
 
+    await fetch('data/photographers.json')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            arrayPhotographers = data;
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
 
-    return ({
-        photographers: [...photographers[0]]
-    })
+    return (arrayPhotographers)
 }
 
 async function displayData(photographers) {
@@ -38,7 +35,25 @@ async function displayData(photographers) {
 async function init() {
     // Récupère les datas des photographes
     const { photographers } = await getPhotographers();
-    displayData(photographers);
+    await displayData(photographers);
+
+
+    // launch new location
+    buttons = document.querySelectorAll('.showPhotos');
+
+    buttons.forEach((btn) => {
+        btn.addEventListener("click", function () {
+            let targetClick = this.getAttribute("data-id");
+
+            window.location='./photographer.html?id='+targetClick;
+        });
+    });
 };
 
 init();
+
+
+// CHANGE PAGE
+
+
+
