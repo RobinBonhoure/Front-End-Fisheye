@@ -13,6 +13,36 @@
     padding: 0 50px;
 }
 
+.photo-grid {
+    display: flex;
+    width: calc(100% - 200px);
+    margin: 30px 100px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.photo {
+    position: relative;
+    width: 25vw;
+    height: 25vw;
+    background-color: rgb(173, 173, 173);
+    margin-bottom: 5vw;
+}
+
+.photo-name {
+    position: absolute;
+    bottom: -60px;
+    left: 0;
+}
+
+.photo-likes {
+    position: absolute;
+    bottom: -60px;
+    right: 0;
+}
+
+/* CONTACT */
+
 .contact_button {
     font-size: 20px;
     font-weight: bold;
