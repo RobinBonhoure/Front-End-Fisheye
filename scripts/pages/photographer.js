@@ -20,65 +20,85 @@ async function openNew(photographers, photos) {
     document.getElementById("p2").innerHTML = tagline;
     document.getElementById("img1").src = picturePhotographe;
 
-    
+
     const photosSection = document.querySelector("#photo-grid");
 
-    
+
     console.log(selectedPhotos)
 
 
     selectedPhotos.forEach((photos) => {
-        const { photographerId, title, image, likes, date, pricePhoto } = photos;
-        if (image) {
+        const { title, video, image, likes } = photos;
+        if (image || video) {
             // const pictures = `assets/images/${name}/${image}`;
-            const pictures = `assets/images/${image}`;
+            const div = document.createElement('div');
+            div.className = "imgContainer";
+            const pictures = `assets/images/${image || video}`;
             const img = document.createElement('img');
-            img.setAttribute("src", pictures);
-            img.dataset.id = id;
-            img.className = "photo";
-            const p1 = document.createElement('p');
-            const p2 = document.createElement('p');
-            p1.textContent = city + ", " + country;
-            p1.className = "city";
-            p2.textContent = tagline;
-            p2.className = "tagline";;
-            photosSection.appendChild(img);
-            // photosSection.appendChild(p1);
-            // article.appendChild(p2);
+            const vid = document.createElement('video');
+            if (image) {
+                img.setAttribute("src", pictures);
+                img.dataset.id = id;
+                img.className = "photo";
+            }
+            if (video) {
+                vid.setAttribute("src", pictures);
+                vid.dataset.id = id;
+                vid.className = "photo";
+            }
+            const p1 = document.createElement('div');
+            const heart = document.createElement('div');
+            heart.className = "heartIcon";
+            // heart.setAttribute("src", "assets/images/icons/heart.svg");
+            const p2 = document.createElement('div');
+            p1.textContent = title;
+            p1.className = "imgTitle";
+            p2.textContent = likes;
+            p2.className = "imgLikes";;
+            p2.appendChild(heart);
+            if (image) {
+                div.appendChild(img);
+            }
+            if (video) {
+                div.appendChild(vid);
+            }
+            div.appendChild(p1);
+            div.appendChild(p2);
+            photosSection.appendChild(div);
         }
     })
 }
 
-    function filterById(jsonObject, id) {
-        return jsonObject.filter(function (jsonObject) {
-            return (jsonObject['id'] == id);
-        })[0];
-    }
+function filterById(jsonObject, id) {
+    return jsonObject.filter(function (jsonObject) {
+        return (jsonObject['id'] == id);
+    })[0];
+}
 
-    async function getPhotos() {
-        // FETCH
+async function getPhotos() {
+    // FETCH
 
-        await fetch('data/photographers.json')
-            .then(response => response.json())
-            .then(data => {
-                arrayPhotographers = data;
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+    await fetch('data/photographers.json')
+        .then(response => response.json())
+        .then(data => {
+            arrayPhotographers = data;
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
 
-        return (arrayPhotographers)
-    }
+    return (arrayPhotographers)
+}
 
-    async function displayData2(photos) {
-        const photographeHeader = document.querySelector(".photographe-header");
-        openNew(arrayPhotographers.photographers, arrayPhotographers.media);
-    };
+async function displayData2(photos) {
+    const photographeHeader = document.querySelector(".photographe-header");
+    openNew(arrayPhotographers.photographers, arrayPhotographers.media);
+};
 
-    async function init2() {
-        // Récupère les datas des photographes
-        const { photos } = await getPhotos();
-        displayData2(photos);
-    };
+async function init2() {
+    // Récupère les datas des photographes
+    const { photos } = await getPhotos();
+    displayData2(photos);
+};
 
-    init2();
+init2();

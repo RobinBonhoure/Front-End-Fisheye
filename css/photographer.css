@@ -26,21 +26,8 @@
     width: 25vw;
     height: 25vw;
     background-color: rgb(173, 173, 173);
-    margin-bottom: 5vw;
     object-fit: cover;
     object-position: center center;
-}
-
-.photo-name {
-    position: absolute;
-    bottom: -60px;
-    left: 0;
-}
-
-.photo-likes {
-    position: absolute;
-    bottom: -60px;
-    right: 0;
 }
 
 #h2 {
@@ -68,6 +55,50 @@
     object-fit: cover;
     object-position: center center;
 }
+.imgContainer {
+    position: relative;
+    margin-bottom: 5vw;
+}
+.imgTitle {
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    color: #901C1C;
+    font-size: 24px;
+    line-height: 31px;
+}
+.imgLikes {
+    position: absolute;
+    bottom: -40px;
+    right: 0;
+    color: #901C1C;
+    font-size: 24px;
+    line-height: 31px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.heartIcon {
+    background-image: url(../assets/images/icons/heart.svg);
+    width: 18px;
+    height: 18px;
+    background-size: cover;
+    margin-left: 5px;
+}
+
+/* TRIER */
+.trier {
+    padding: 40px 100px;
+}
+.trier select {
+    background-color: #901C1C;
+    color: white;
+    padding: 20px;
+}
+.trier label {
+    font-weight: bold;
+}
+
 
 /* CONTACT */
 
