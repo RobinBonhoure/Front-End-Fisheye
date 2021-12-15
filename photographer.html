@@ -25,17 +25,28 @@
     </div>
     <div class="trier">
       <label for="tri">Trier par</label>
-      <select name="tri" id="tri">
-        <option value="popularity">Popularité</option>
+      <!-- <select name="tri" id="tri">
+        <option selected  value="popularity">Popularité</option>
         <option value="date">Date</option>
         <option value="title">Titre</option>
-      </select>
+      </select> -->
+      <div class="custom-select" style="width:200px;">
+        <select>
+          <option value="0">Select car:</option>
+          <option value="1">Popularity</option>
+          <option value="2">Date</option>
+          <option value="3">Titre</option>
+        </select>
+      </div>
     </div>
     <div id="photo-grid" class="photo-grid">
-      <!-- <div class="photo">
-        <p class="photo-name">blabla</p>
-        <p class="photo-likes">likes</p>
-      </div> -->
+    </div>
+    <div id="infos-fixed" class="infos-fixed">
+      <div class="likes-container">
+        <div id="likes-fixed" class="likes-fixed"></div>
+        <div class="heartIconBlack"></div>
+      </div>
+      <div id="tarif-fixed" class="tarif-fixed"></div>
     </div>
   </main>
   <div id="contact_modal">

@@ -36,18 +36,21 @@
     line-height: 84px;
     margin: 0;
 }
-#p1{
+
+#p1 {
     color: #901C1C;
     font-size: 24px;
     line-height: 32px;
     margin-top: 20px;
 }
-#p2{
+
+#p2 {
     font-size: 18px;
     line-height: 24px;
     color: #757575;
     margin-top: 20px;
 }
+
 #img1 {
     height: 200px;
     width: 200px;
@@ -55,10 +58,12 @@
     object-fit: cover;
     object-position: center center;
 }
+
 .imgContainer {
     position: relative;
     margin-bottom: 5vw;
 }
+
 .imgTitle {
     position: absolute;
     bottom: -40px;
@@ -67,6 +72,7 @@
     font-size: 24px;
     line-height: 31px;
 }
+
 .imgLikes {
     position: absolute;
     bottom: -40px;
@@ -78,8 +84,9 @@
     align-items: center;
     justify-content: center;
 }
+
 .heartIcon {
-    background-image: url(../assets/images/icons/heart.svg);
+    background-image: url(../assets/icons/heart.svg);
     width: 18px;
     height: 18px;
     background-size: cover;
@@ -87,18 +94,113 @@
 }
 
 /* TRIER */
-.trier {
+/* .trier {
     padding: 40px 100px;
 }
 .trier select {
     background-color: #901C1C;
     color: white;
     padding: 20px;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    appearance:none;
+}
+.trier select option {
+    background-color: #901C1C;
+    color: white;
+    padding: 20px;
+    height: 50px;
 }
 .trier label {
     font-weight: bold;
+} */
+.custom-select select {
+    display: none;
+    /*hide original SELECT element: */
 }
 
+.select-selected {
+    background-color: DodgerBlue;
+}
+
+/* Style the arrow inside the select element: */
+.select-selected:after {
+    position: absolute;
+    content: "";
+    top: 14px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: #fff transparent transparent transparent;
+}
+
+/* Point the arrow upwards when the select box is open (active): */
+.select-selected.select-arrow-active:after {
+    border-color: transparent transparent #fff transparent;
+    top: 7px;
+}
+
+/* style the items (options), including the selected item: */
+.select-items div, .select-selected {
+    color: #ffffff;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+    cursor: pointer;
+}
+
+/* Style items (options): */
+.select-items {
+    position: absolute;
+    background-color: DodgerBlue;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+}
+
+/* Hide the items when the select box is closed: */
+.select-hide {
+    display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* FIXED INFOS */
+.infos-fixed {
+    width: 375px;
+    background-color: #DB8876;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    border-radius: 5px 5px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.likes-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.likes-fixed {
+    font-size: 24px;
+}
+.tarif-fixed {
+    font-size: 24px;
+}
+
+.heartIconBlack {
+    background-image: url(../assets/icons/heart-black.svg);
+    width: 18px;
+    height: 18px;
+    background-size: cover;
+    margin-left: 5px;
+}
 
 /* CONTACT */
 
