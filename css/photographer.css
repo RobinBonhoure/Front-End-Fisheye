@@ -28,6 +28,7 @@
     background-color: rgb(173, 173, 173);
     object-fit: cover;
     object-position: center center;
+    cursor: pointer;
 }
 
 #h2 {
@@ -93,6 +94,41 @@
     margin-left: 5px;
 }
 
+/* LIGHTBOX */
+.lightbox {
+    display: none;
+    /* display: flex; */
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    width: calc(100% - 100px);
+    height: calc(100vh - 40px);
+    top: 0;
+    left: 0;
+    padding: 20px 50px;
+}
+
+.lightbox-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 50px;
+}
+
+.lightbox-photo {
+    width: 100%;
+    height: 100%;
+    background-color: blanchedalmond;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
 /* TRIER */
 /* .trier {
     padding: 40px 100px;
@@ -114,59 +150,53 @@
 .trier label {
     font-weight: bold;
 } */
-.custom-select select {
-    display: none;
-    /*hide original SELECT element: */
-}
-
-.select-selected {
-    background-color: DodgerBlue;
-}
-
-/* Style the arrow inside the select element: */
-.select-selected:after {
-    position: absolute;
-    content: "";
-    top: 14px;
-    right: 10px;
-    width: 0;
-    height: 0;
-    border: 6px solid transparent;
-    border-color: #fff transparent transparent transparent;
-}
-
-/* Point the arrow upwards when the select box is open (active): */
-.select-selected.select-arrow-active:after {
-    border-color: transparent transparent #fff transparent;
-    top: 7px;
-}
-
-/* style the items (options), including the selected item: */
-.select-items div, .select-selected {
-    color: #ffffff;
-    padding: 8px 16px;
-    border: 1px solid transparent;
-    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+/* Dropdown Button */
+.dropbtn {
+    background-color: #3498DB;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
     cursor: pointer;
 }
 
-/* Style items (options): */
-.select-items {
-    position: absolute;
-    background-color: DodgerBlue;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 99;
+/* Dropdown button on hover & focus */
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #2980B9;
 }
 
-/* Hide the items when the select box is closed: */
-.select-hide {
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
     display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
 }
 
-.select-items div:hover, .same-as-selected {
-    background-color: rgba(0, 0, 0, 0.1);
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+    background-color: #ddd
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {
+    display: block;
 }
 
 /* FIXED INFOS */
@@ -182,14 +212,17 @@
     justify-content: space-between;
     align-items: center;
 }
+
 .likes-container {
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 .likes-fixed {
     font-size: 24px;
 }
+
 .tarif-fixed {
     font-size: 24px;
 }
@@ -203,6 +236,21 @@
 }
 
 /* CONTACT */
+#contact_modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    transition: 1s backdrop-filter linear;
+    -webkit-transition: 1s -webkit-backdrop-filter linear;
+    -moz-transition: 1s -moz-backdrop-filter linear;
+    -ms-transition: 1s -ms-backdrop-filter linear;
+    -o-transition: 1s -o-backdrop-filter linear;
+}
 
 .contact_button {
     font-size: 20px;

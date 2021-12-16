@@ -30,13 +30,13 @@
         <option value="date">Date</option>
         <option value="title">Titre</option>
       </select> -->
-      <div class="custom-select" style="width:200px;">
-        <select>
-          <option value="0">Select car:</option>
-          <option value="1">Popularity</option>
-          <option value="2">Date</option>
-          <option value="3">Titre</option>
-        </select>
+      <div class="dropdown">
+        <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+        <div id="myDropdown" class="dropdown-content">
+          <a href="#">Link 1</a>
+          <a href="#">Link 2</a>
+          <a href="#">Link 3</a>
+        </div>
       </div>
     </div>
     <div id="photo-grid" class="photo-grid">
@@ -49,18 +49,45 @@
       <div id="tarif-fixed" class="tarif-fixed"></div>
     </div>
   </main>
+  <!-- LIGHTBOX -->
+  <div class="lightbox">
+    <div id="lightbox-left" class="lightbox-arrow">
+      <img src="assets/icons/arrow-left.svg" alt="">
+    </div>
+    <img src="" id="lightbox-photo" class="lightbox-photo" alt="">
+    <div id="lightbox-right" class="lightbox-arrow">
+      <img src="assets/icons/arrow-right.svg" alt="">
+    </div>
+    <div class="lightbox-close">
+      <img src="assets/icons/close.svg" alt="">
+    </div>
+  </div>
+  <!-- MODAL -->
   <div id="contact_modal">
     <div class="modal">
       <header>
         <h2>Contactez-moi</h2>
         <img src="assets/icons/close.svg" onclick="closeModal()" />
       </header>
-      <form>
-        <div>
-          <label>Prénom</label>
-          <input />
+      <form id="reserve" name="reserve" action="index.html" method="get" onsubmit="validate(event);">
+        <div class="formData" id="lalala">
+          <label for="first">Prénom</label><br>
+          <input class="text-control" id="first" name="first" /><br>
         </div>
-        <button class="contact_button">Envoyer</button>
+        <div class="formData">
+          <label for="last">Nom</label><br>
+          <input class="text-control" id="last" name="last" /><br>
+        </div>
+        <div class="formData">
+          <label for="email">Email</label><br>
+          <input class="text-control" id="email" name="email" /><br>
+        </div>
+        <div class="formData">
+          <label for="message">Votre message</label><br>
+          <input class="text-control" id="message" name="message" /><br>
+        </div>
+      </form>
+      <button class="contact_button">Envoyer</button>
       </form>
     </div>
   </div>
