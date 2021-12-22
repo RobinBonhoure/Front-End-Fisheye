@@ -7,7 +7,7 @@ async function openNew(photographers, photos) {
 
   // photographers
   const selectedPhotographer = await filterById(photographers, photographerIdUrl);
-  const { name, id, city, country, tagline, price, portrait } = selectedPhotographer;
+  const { name, city, country, tagline, price, portrait } = selectedPhotographer;
 
   // photos du photographe
   const selectedPhotos = photos.filter(obj => obj.photographerId == photographerIdUrl);
@@ -20,16 +20,12 @@ async function openNew(photographers, photos) {
   document.getElementById("p2").innerHTML = tagline;
   document.getElementById("img1").src = picturePhotographe;
 
-
   const photosSection = document.querySelector("#photo-grid");
-
-
-  console.log(selectedPhotos)
 
   var totalLikes = 0;
 
   selectedPhotos.forEach((photos) => {
-    const { title, video, image, likes } = photos;
+    const { title, video, image, likes, id } = photos;
     totalLikes += likes;
     if (image || video) {
       const div = document.createElement('div');
@@ -94,7 +90,7 @@ async function getPhotos() {
   return (arrayPhotographers)
 }
 
-async function displayData2(photos) {
+async function displayData2() {
   const photographeHeader = document.querySelector(".photographe-header");
   openNew(arrayPhotographers.photographers, arrayPhotographers.media);
 };
@@ -102,16 +98,72 @@ async function displayData2(photos) {
 async function init2() {
   // Récupère les datas des photographes
   const { photos } = await getPhotos();
-  displayData2(photos);
+  displayData2();
+  // check if photos are in the DOM
+  let checkExist = setInterval(function () {
+    if (document.querySelectorAll('.photo').length) {
+      lightBox(photos);
+      clearInterval(checkExist);
+    }
+  }, 100);
 };
 
 init2();
 
 
 // LIGHTBOX
+const lightbox = document.querySelector("#lightbox");
+const lightboxPhoto = document.querySelector("#lightbox-photo");
 const lightboxLeft = document.querySelector("#lightbox-left");
 const lightboxRight = document.querySelector("#lightbox-right");
 const lightboxClose = document.querySelector("#lightbox-close");
+let photoIndice = 0;
+
+// close lightbox
+lightboxClose.addEventListener("click", function () {
+  lightbox.style.display = "none";
+});
+
+// change photo
+lightboxLeft.addEventListener("click", function () {
+  const selectedPhotos = arrayPhotographers.media.filter(obj => obj.photographerId == photographerIdUrl);
+  console.log(selectedPhotos)
+  if ((selectedPhotos[(photoIndice + selectedPhotos.length - 1) % selectedPhotos.length].image)) {
+    urlPhoto = selectedPhotos[(photoIndice + selectedPhotos.length - 1) % selectedPhotos.length].image;
+  }
+  if ((selectedPhotos[(photoIndice + selectedPhotos.length - 1) % selectedPhotos.length].video)) {
+    urlPhoto = selectedPhotos[(photoIndice + selectedPhotos.length - 1) % selectedPhotos.length].video;
+  }
+  photoIndice--;
+  lightboxPhoto.src = `assets/images/${urlPhoto}`;
+});
+
+// open the lightbox
+async function lightBox() {
+  const classPhotos = document.querySelectorAll(".photo");
+  classPhotos.forEach((classPhoto) => {
+    classPhoto.addEventListener("click", function () {
+      // src de la photo target
+      const photoId = this.dataset.id;
+      const selectedPhotos = arrayPhotographers.media.filter(obj => obj.photographerId == photographerIdUrl);
+      let urlPhoto;
+
+      // find the good photo
+      for (var i = 0; i < selectedPhotos.length; i++) {
+        if (selectedPhotos[i].id === eval(photoId)) {
+          urlPhoto = selectedPhotos[i].image;
+          photoIndice = i;
+        }
+      }
+
+      // show lightbox
+      lightboxPhoto.src = `assets/images/${urlPhoto}`;
+      lightbox.style.display = "flex";
+    });
+  });
+
+
+}
 
 
 // SELECT BOX
@@ -122,7 +174,7 @@ function myFunction() {
 }
 
 // Close the dropdown menu if the user clicks outside of it
-window.onclick = function(event) {
+window.onclick = function (event) {
   if (!event.target.matches('.dropbtn')) {
     var dropdowns = document.getElementsByClassName("dropdown-content");
     var i;
