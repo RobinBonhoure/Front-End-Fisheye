@@ -49,7 +49,7 @@ async function openNew(photographers, photos) {
       const p2 = document.createElement('div');
       p1.textContent = title;
       p1.className = "imgTitle";
-      p2.textContent = likes;
+      p2.innerHTML = `<span>${likes}</span>`;
       p2.className = "imgLikes";;
       p2.appendChild(heart);
       if (image) {
@@ -101,8 +101,9 @@ async function init2() {
   displayData2();
   // check if photos are in the DOM
   let checkExist = setInterval(function () {
-    if (document.querySelectorAll('.photo').length) {
+    if (document.querySelectorAll('.photo').length && document.querySelectorAll('.imgLikes').length) {
       lightBox(photos);
+      likesCounter();
       clearInterval(checkExist);
     }
   }, 100);
@@ -110,14 +111,28 @@ async function init2() {
 
 init2();
 
+// INCREMENT LIKES
+
+async function likesCounter() {
+  let imgLikesCounter = document.querySelectorAll('.imgLikes');
+
+  imgLikesCounter.forEach((liker) => {
+    liker.addEventListener('click', () => {
+      liker.children[0].textContent++;
+      document.getElementById("likes-fixed").textContent++;
+    })
+  })
+}
 
 // LIGHTBOX
 const lightbox = document.querySelector("#lightbox");
 const lightboxPhoto = document.querySelector("#lightbox-photo");
+const lightboxVideo = document.querySelector("#lightbox-video");
 const lightboxLeft = document.querySelector("#lightbox-left");
 const lightboxRight = document.querySelector("#lightbox-right");
 const lightboxClose = document.querySelector("#lightbox-close");
 let photoIndice = 0;
+let leftClick;
 
 // close lightbox
 lightboxClose.addEventListener("click", function () {
@@ -125,18 +140,37 @@ lightboxClose.addEventListener("click", function () {
 });
 
 // change photo
+// left
 lightboxLeft.addEventListener("click", function () {
-  const selectedPhotos = arrayPhotographers.media.filter(obj => obj.photographerId == photographerIdUrl);
-  console.log(selectedPhotos)
-  if ((selectedPhotos[(photoIndice + selectedPhotos.length - 1) % selectedPhotos.length].image)) {
-    urlPhoto = selectedPhotos[(photoIndice + selectedPhotos.length - 1) % selectedPhotos.length].image;
-  }
-  if ((selectedPhotos[(photoIndice + selectedPhotos.length - 1) % selectedPhotos.length].video)) {
-    urlPhoto = selectedPhotos[(photoIndice + selectedPhotos.length - 1) % selectedPhotos.length].video;
-  }
-  photoIndice--;
-  lightboxPhoto.src = `assets/images/${urlPhoto}`;
+  leftClick = true;
+  changePhotoLightbox(leftClick);
 });
+// right
+lightboxRight.addEventListener("click", function () {
+  leftClick = false;
+  changePhotoLightbox(leftClick);
+});
+
+function changePhotoLightbox(value) {
+  const selectedPhotos = arrayPhotographers.media.filter(obj => obj.photographerId == photographerIdUrl);
+  if (value) {
+    photoIndice = (photoIndice + selectedPhotos.length - 1) % selectedPhotos.length;
+  } else {
+    photoIndice = (photoIndice + selectedPhotos.length + 1) % selectedPhotos.length;
+  }
+  if ((selectedPhotos[photoIndice].image) !== (undefined && null)) {
+    lightboxVideo.style.display = "none";
+    lightboxPhoto.style.display = "initial";
+    urlPhoto = selectedPhotos[photoIndice].image;
+    lightboxPhoto.src = `assets/images/${urlPhoto}`;
+  }
+  if ((selectedPhotos[photoIndice].video) !== (undefined && null)) {
+    lightboxVideo.style.display = "initial";
+    lightboxPhoto.style.display = "none";
+    urlVideo = selectedPhotos[photoIndice].video;
+    lightboxVideo.src = `assets/images/${urlVideo}`;
+  }
+}
 
 // open the lightbox
 async function lightBox() {
@@ -147,22 +181,35 @@ async function lightBox() {
       const photoId = this.dataset.id;
       const selectedPhotos = arrayPhotographers.media.filter(obj => obj.photographerId == photographerIdUrl);
       let urlPhoto;
+      let urlVideo;
 
       // find the good photo
-      for (var i = 0; i < selectedPhotos.length; i++) {
+      for (let i = 0; i < selectedPhotos.length; i++) {
         if (selectedPhotos[i].id === eval(photoId)) {
           urlPhoto = selectedPhotos[i].image;
           photoIndice = i;
+          // show photo
+          if ((selectedPhotos[photoIndice].image) !== (undefined && null)) {
+            lightboxVideo.style.display = "none";
+            lightboxPhoto.style.display = "initial";
+            urlPhoto = selectedPhotos[photoIndice].image;
+            lightboxPhoto.src = `assets/images/${urlPhoto}`;
+          }
+          // showvideo
+          if ((selectedPhotos[photoIndice].video) !== (undefined && null)) {
+            lightboxVideo.style.display = "initial";
+            lightboxPhoto.style.display = "none";
+            urlVideo = selectedPhotos[photoIndice].video;
+            lightboxVideo.src = `assets/images/${urlVideo}`;
+          }
         }
       }
 
       // show lightbox
-      lightboxPhoto.src = `assets/images/${urlPhoto}`;
+      // lightboxPhoto.src = `assets/images/${urlPhoto}`;
       lightbox.style.display = "flex";
     });
   });
-
-
 }
 
 

@@ -25,11 +25,6 @@
     </div>
     <div class="trier">
       <label for="tri">Trier par</label>
-      <!-- <select name="tri" id="tri">
-        <option selected  value="popularity">Popularité</option>
-        <option value="date">Date</option>
-        <option value="title">Titre</option>
-      </select> -->
       <div class="dropdown">
         <button onclick="myFunction()" class="dropbtn">Dropdown</button>
         <div id="myDropdown" class="dropdown-content">
@@ -55,13 +50,14 @@
       <img src="assets/icons/arrow-left.svg" alt="">
     </div>
     <img src="" id="lightbox-photo" class="lightbox-photo" alt="">
-    <video src="" id="lightbox-video" class="lightbox-video"></video>
+    <video src="" id="lightbox-video" class="lightbox-video" controls></video>
     <div id="lightbox-right" class="lightbox-arrow">
       <img src="assets/icons/arrow-right.svg" alt="">
     </div>
     <div id="lightbox-close" class="lightbox-close">
       <img src="assets/icons/close.svg" alt="">
     </div>
+    <div id="lighbox-title" class="lightbox-title">lalal</div>
   </div>
   <!-- MODAL -->
   <div id="contact_modal">
@@ -70,8 +66,8 @@
         <h2>Contactez-moi</h2>
         <img src="assets/icons/close.svg" onclick="closeModal()" />
       </header>
-      <form id="reserve" name="reserve" action="index.html" method="get" onsubmit="validate(event);">
-        <div class="formData" id="lalala">
+      <form id="contactForm" name="contactForm" action="photographer.html" method="get" onsubmit="validate(event);">
+        <div class="formData">
           <label for="first">Prénom</label><br>
           <input class="text-control" id="first" name="first" /><br>
         </div>
@@ -87,8 +83,7 @@
           <label for="message">Votre message</label><br>
           <input class="text-control" id="message" name="message" /><br>
         </div>
-      </form>
-      <button class="contact_button">Envoyer</button>
+        <input class="btn-submit contact_button" type="submit" class="button" value="Envoyer" />
       </form>
     </div>
   </div>
