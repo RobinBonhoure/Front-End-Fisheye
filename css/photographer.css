@@ -84,6 +84,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
 .heartIcon {
@@ -92,12 +93,12 @@
     height: 18px;
     background-size: cover;
     margin-left: 5px;
+    cursor: pointer;
 }
 
 /* LIGHTBOX */
 .lightbox {
     display: none;
-    /* display: flex; */
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -118,12 +119,15 @@
     width: 50px;
     padding: 0 50px;
     position: absolute;
+    cursor: pointer;
 }
 #lightbox-left {
     left: 50px;
+    cursor: pointer;
 }
 #lightbox-right {
     right: 50px;
+    cursor: pointer;
 }
 
 .lightbox-photo {
@@ -138,8 +142,6 @@
 
 .lightbox-video {
     display: none;
-    /* height: 100%;
-    width: auto; */
     max-width: calc(100vw - 400px);
 }
 
@@ -148,6 +150,7 @@
     top: 70px;
     right: 100px;
     z-index: 5;
+    cursor: pointer;
 }
 
 .lightbox-title {
@@ -207,7 +210,7 @@
 }
 
 /* Links inside the dropdown */
-.dropdown-content a {
+.dropdown-content p {
     color: white;
     padding: 12px 16px;
     margin: 0 16px;
@@ -215,15 +218,11 @@
     display: block;
     border-top: 1px solid white;
     font-weight: bold;
+    cursor: pointer;
 }
 
-.dropdown-content a:first-child {
+.dropdown-content p:first-child {
     border-top: none!important;
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {
-    background-color: #ddd
 }
 
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */

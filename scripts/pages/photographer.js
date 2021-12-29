@@ -30,6 +30,8 @@ async function openNew(photographers, photos) {
     if (image || video) {
       const div = document.createElement('div');
       div.className = "imgContainer";
+      div.dataset.likes = likes;
+      div.dataset.title = title;
       const pictures = `assets/images/${image || video}`;
       const img = document.createElement('img');
       const vid = document.createElement('video');
@@ -213,23 +215,73 @@ async function lightBox() {
 }
 
 
-// SELECT BOX
+// DROPDOWN
 /* When the user clicks on the button,
 toggle between hiding and showing the dropdown content */
-function myFunction() {
+function dropdownShow() {
   document.getElementById("myDropdown").classList.toggle("show");
 }
 
 // Close the dropdown menu if the user clicks outside of it
 window.onclick = function (event) {
   if (!event.target.matches('.dropbtn')) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
+    let dropdowns = document.getElementsByClassName("dropdown-content");
+    for (let i = 0; i < dropdowns.length; i++) {
+      let openDropdown = dropdowns[i];
       if (openDropdown.classList.contains('show')) {
         openDropdown.classList.remove('show');
       }
+    }
+  }
+  if (event.target.matches('.dropdownItem')) {
+    document.getElementById('dropbtn').textContent = event.target.textContent;
+    if (event.target.textContent === "Popularité") {
+      sortTitle();
+    }
+  }
+}
+
+// TRI PAR TITRE
+
+function sortTitle() {
+  let photoContainer, i, switching, shouldSwitch;
+  photoContainer = document.getElementById("photo-grid");
+  // photoList = document.querySelectorAll('.imgContainer');
+
+  // photoContainer.forEach((photo) => {
+      // console.log(photoContainer.children[0].dataset.title.toLowerCase());
+  // })
+
+  switching = true;
+  /* Make a loop that will continue until
+  no switching has been done: */
+  while (switching) {
+    // start by saying: no switching is done:
+    switching = false;
+    console.log("3",photoContainer.children.length)
+    // Loop through all list-items:
+    for (i = 0; i < (photoContainer.children.length - 1); i++) {
+      console.log("4")
+      // start by saying there should be no switching:
+      shouldSwitch = false;
+      /* check if the next item should
+      switch place with the current item: */
+      console.log(photoContainer.children[i].dataset.title.toLowerCase(),photoContainer.children[i + 1].dataset.title.toLowerCase())
+      if (photoContainer.children[i].dataset.title.toLowerCase() > photoContainer.children[i + 1].dataset.title.toLowerCase()) {
+        /* if next item is alphabetically
+        lower than current item, mark as a switch
+        and break the loop: */
+        shouldSwitch = true;
+        console.log("1")
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /* If a switch has been marked, make the switch
+      and mark the switch as done: */
+      photoContainer.children[i].parentNode.insertBefore(photoContainer.children[i + 1], photoContainer.children[i]);
+      switching = true;
+      console.log("2")
     }
   }
 }
