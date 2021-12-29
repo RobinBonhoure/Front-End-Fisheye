@@ -130,6 +130,7 @@ async function likesCounter() {
 const lightbox = document.querySelector("#lightbox");
 const lightboxPhoto = document.querySelector("#lightbox-photo");
 const lightboxVideo = document.querySelector("#lightbox-video");
+const lightboxTitle = document.querySelector("#lightbox-title");
 const lightboxLeft = document.querySelector("#lightbox-left");
 const lightboxRight = document.querySelector("#lightbox-right");
 const lightboxClose = document.querySelector("#lightbox-close");
@@ -163,12 +164,14 @@ function changePhotoLightbox(value) {
   if ((selectedPhotos[photoIndice].image) !== (undefined && null)) {
     lightboxVideo.style.display = "none";
     lightboxPhoto.style.display = "initial";
+    lightboxTitle.textContent = selectedPhotos[photoIndice].title;
     urlPhoto = selectedPhotos[photoIndice].image;
     lightboxPhoto.src = `assets/images/${urlPhoto}`;
   }
   if ((selectedPhotos[photoIndice].video) !== (undefined && null)) {
     lightboxVideo.style.display = "initial";
     lightboxPhoto.style.display = "none";
+    lightboxTitle.textContent = "";
     urlVideo = selectedPhotos[photoIndice].video;
     lightboxVideo.src = `assets/images/${urlVideo}`;
   }
@@ -194,6 +197,7 @@ async function lightBox() {
           if ((selectedPhotos[photoIndice].image) !== (undefined && null)) {
             lightboxVideo.style.display = "none";
             lightboxPhoto.style.display = "initial";
+            lightboxTitle.textContent = selectedPhotos[photoIndice].title;
             urlPhoto = selectedPhotos[photoIndice].image;
             lightboxPhoto.src = `assets/images/${urlPhoto}`;
           }
@@ -201,6 +205,7 @@ async function lightBox() {
           if ((selectedPhotos[photoIndice].video) !== (undefined && null)) {
             lightboxVideo.style.display = "initial";
             lightboxPhoto.style.display = "none";
+            lightboxTitle.textContent = "";
             urlVideo = selectedPhotos[photoIndice].video;
             lightboxVideo.src = `assets/images/${urlVideo}`;
           }
@@ -220,6 +225,7 @@ async function lightBox() {
 toggle between hiding and showing the dropdown content */
 function dropdownShow() {
   document.getElementById("myDropdown").classList.toggle("show");
+  document.getElementById("dropbtn").classList.toggle("active");
 }
 
 // Close the dropdown menu if the user clicks outside of it
@@ -236,21 +242,18 @@ window.onclick = function (event) {
   if (event.target.matches('.dropdownItem')) {
     document.getElementById('dropbtn').textContent = event.target.textContent;
     if (event.target.textContent === "Popularité") {
+      sortLikes();
+    }
+    if (event.target.textContent === "Titre") {
       sortTitle();
     }
   }
 }
 
 // TRI PAR TITRE
-
 function sortTitle() {
   let photoContainer, i, switching, shouldSwitch;
   photoContainer = document.getElementById("photo-grid");
-  // photoList = document.querySelectorAll('.imgContainer');
-
-  // photoContainer.forEach((photo) => {
-      // console.log(photoContainer.children[0].dataset.title.toLowerCase());
-  // })
 
   switching = true;
   /* Make a loop that will continue until
@@ -258,21 +261,17 @@ function sortTitle() {
   while (switching) {
     // start by saying: no switching is done:
     switching = false;
-    console.log("3",photoContainer.children.length)
     // Loop through all list-items:
     for (i = 0; i < (photoContainer.children.length - 1); i++) {
-      console.log("4")
       // start by saying there should be no switching:
       shouldSwitch = false;
       /* check if the next item should
       switch place with the current item: */
-      console.log(photoContainer.children[i].dataset.title.toLowerCase(),photoContainer.children[i + 1].dataset.title.toLowerCase())
       if (photoContainer.children[i].dataset.title.toLowerCase() > photoContainer.children[i + 1].dataset.title.toLowerCase()) {
         /* if next item is alphabetically
         lower than current item, mark as a switch
         and break the loop: */
         shouldSwitch = true;
-        console.log("1")
         break;
       }
     }
@@ -281,7 +280,40 @@ function sortTitle() {
       and mark the switch as done: */
       photoContainer.children[i].parentNode.insertBefore(photoContainer.children[i + 1], photoContainer.children[i]);
       switching = true;
-      console.log("2")
+    }
+  }
+}
+
+// TRI PAR LIKES
+function sortLikes() {
+  let photoContainer, i, switching, shouldSwitch;
+  photoContainer = document.getElementById("photo-grid");
+
+  switching = true;
+  /* Make a loop that will continue until
+  no switching has been done: */
+  while (switching) {
+    // start by saying: no switching is done:
+    switching = false;
+    // Loop through all list-items:
+    for (i = 0; i < (photoContainer.children.length - 1); i++) {
+      // start by saying there should be no switching:
+      shouldSwitch = false;
+      /* check if the next item should
+      switch place with the current item: */
+      if (+photoContainer.children[i].dataset.likes < +photoContainer.children[i + 1].dataset.likes) {
+        /* if next item is alphabetically
+        lower than current item, mark as a switch
+        and break the loop: */
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /* If a switch has been marked, make the switch
+      and mark the switch as done: */
+      photoContainer.children[i].parentNode.insertBefore(photoContainer.children[i + 1], photoContainer.children[i]);
+      switching = true;
     }
   }
 }

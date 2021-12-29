@@ -167,7 +167,7 @@
     padding: 40px 100px;
 }
 .trier label {
-    font-weight: bold;
+    font-weight: 700;
     font-size: 18px;
 }
 /* Dropdown Button */
@@ -178,11 +178,34 @@
     font-size: 18px;
     border: none;
     cursor: pointer;
-    min-width: 160px;
-    text-align: center;
-    font-weight: bold;
+    min-width: 170px;
+    text-align: left;
+    font-weight: 700;
     border-radius: 5px;
     margin-left: 50px;
+    position: relative;
+}
+.dropbtn::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-right: 3px solid white;
+    border-bottom: 3px solid white;
+    transform: rotate(45deg);
+    position: absolute;
+    right: 20px;
+    top: 19px;
+}
+.dropdownFirstItem::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-right: 3px solid white;
+    border-bottom: 3px solid white;
+    transform: rotate(-135deg);
+    position: absolute;
+    right: 20px;
+    top: 25px;
 }
 
 /* Dropdown button on hover & focus */
@@ -201,7 +224,7 @@
     display: none;
     position: absolute;
     background-color: #901C1C;
-    min-width: 160px;
+    min-width: 170px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     border-radius: 5px;
@@ -217,7 +240,8 @@
     text-decoration: none;
     display: block;
     border-top: 1px solid white;
-    font-weight: bold;
+    font-size: 18px;
+    font-weight: 700;
     cursor: pointer;
 }
 
@@ -275,12 +299,7 @@
     height: 100vh;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(5px);
-    transition: 1s backdrop-filter linear;
-    -webkit-transition: 1s -webkit-backdrop-filter linear;
-    -moz-transition: 1s -moz-backdrop-filter linear;
-    -ms-transition: 1s -ms-backdrop-filter linear;
-    -o-transition: 1s -o-backdrop-filter linear;
+    background-color: white;
 }
 
 .contact_button {
