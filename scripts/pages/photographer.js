@@ -11,6 +11,7 @@ async function openNew(photographers, photos) {
 
   // photos du photographe
   const selectedPhotos = photos.filter(obj => obj.photographerId == photographerIdUrl);
+  console.log(selectedPhotos)
 
   const picturePhotographe = `assets/photographers/${portrait}`;
 
@@ -25,29 +26,21 @@ async function openNew(photographers, photos) {
   var totalLikes = 0;
 
   selectedPhotos.forEach((photos) => {
-    const { title, video, image, likes, id } = photos;
+    const { date, title, video, image, likes, id } = photos;
     totalLikes += likes;
     if (image || video) {
       const div = document.createElement('div');
       div.className = "imgContainer";
       div.dataset.likes = likes;
       div.dataset.title = title;
+      div.dataset.date = date;
       const pictures = `assets/images/${image || video}`;
       const img = document.createElement('img');
       const vid = document.createElement('video');
-      if (image) {
-        img.setAttribute("src", pictures);
-        img.dataset.id = id;
-        img.className = "photo";
-      }
-      if (video) {
-        vid.setAttribute("src", pictures);
-        vid.dataset.id = id;
-        vid.className = "photo";
-      }
       const p1 = document.createElement('div');
       const heart = document.createElement('div');
       heart.className = "heartIcon";
+      heart.setAttribute("alt", "Likes");
       const p2 = document.createElement('div');
       p1.textContent = title;
       p1.className = "imgTitle";
@@ -55,9 +48,17 @@ async function openNew(photographers, photos) {
       p2.className = "imgLikes";;
       p2.appendChild(heart);
       if (image) {
+        img.setAttribute("src", pictures);
+        img.setAttribute("alt", `Photo ${title}`);
+        img.dataset.id = id;
+        img.className = "photo";
         div.appendChild(img);
       }
       if (video) {
+        vid.setAttribute("src", pictures);
+        vid.setAttribute("alt", "Video");
+        vid.dataset.id = id;
+        vid.className = "photo";
         div.appendChild(vid);
       }
       div.appendChild(p1);
@@ -78,8 +79,8 @@ function filterById(jsonObject, id) {
 }
 
 async function getPhotos() {
-  // FETCH
 
+  // FETCH
   await fetch('data/photographers.json')
     .then(response => response.json())
     .then(data => {
@@ -153,6 +154,41 @@ lightboxRight.addEventListener("click", function () {
   leftClick = false;
   changePhotoLightbox(leftClick);
 });
+
+// CHANGE WITH KEYBOARD
+window.addEventListener("keydown", function (event) {
+  if (event.defaultPrevented) {
+    return; // Do nothing if the event was already processed
+  }
+
+  switch (event.key) {
+    case "ArrowDown":
+      // code for "down arrow" key press.
+      break;
+    case "ArrowUp":
+      // code for "up arrow" key press.
+      break;
+    case "ArrowLeft":
+      // code for "left arrow" key press.
+      leftClick = true;
+      changePhotoLightbox(leftClick);
+      break;
+    case "ArrowRight":
+      // code for "right arrow" key press.
+      leftClick = false;
+      changePhotoLightbox(leftClick);
+      break;
+    case "Escape":
+      lightbox.style.display = "none";
+    default:
+      return; // Quit when this doesn't handle the key event.
+  }
+
+  // Cancel the default action to avoid it being handled twice
+  event.preventDefault();
+}, true);
+// the last option dispatches the event to the listener first,
+// then dispatches event to window
 
 function changePhotoLightbox(value) {
   const selectedPhotos = arrayPhotographers.media.filter(obj => obj.photographerId == photographerIdUrl);
@@ -244,6 +280,9 @@ window.onclick = function (event) {
     if (event.target.textContent === "Popularité") {
       sortLikes();
     }
+    if (event.target.textContent === "Date") {
+      sortDate();
+    }
     if (event.target.textContent === "Titre") {
       sortTitle();
     }
@@ -284,34 +323,45 @@ function sortTitle() {
   }
 }
 
+// TRI PAR DATES
+function sortDate() {
+  let photoContainer, i, switching, shouldSwitch;
+  photoContainer = document.getElementById("photo-grid");
+  switching = true;
+  while (switching) {
+    switching = false;
+    for (i = 0; i < (photoContainer.children.length - 1); i++) {
+      console.log(+photoContainer.children[i].dataset.date,+photoContainer.children[i + 1].dataset.date)
+      shouldSwitch = false;
+      if (+photoContainer.children[i].dataset.date > +photoContainer.children[i + 1].dataset.date) {
+        shouldSwitch = true;
+        console.log("b")
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      photoContainer.children[i].parentNode.insertBefore(photoContainer.children[i + 1], photoContainer.children[i]);
+      switching = true;
+    }
+  }
+}
+
 // TRI PAR LIKES
 function sortLikes() {
   let photoContainer, i, switching, shouldSwitch;
   photoContainer = document.getElementById("photo-grid");
 
   switching = true;
-  /* Make a loop that will continue until
-  no switching has been done: */
   while (switching) {
-    // start by saying: no switching is done:
     switching = false;
-    // Loop through all list-items:
     for (i = 0; i < (photoContainer.children.length - 1); i++) {
-      // start by saying there should be no switching:
       shouldSwitch = false;
-      /* check if the next item should
-      switch place with the current item: */
       if (+photoContainer.children[i].dataset.likes < +photoContainer.children[i + 1].dataset.likes) {
-        /* if next item is alphabetically
-        lower than current item, mark as a switch
-        and break the loop: */
         shouldSwitch = true;
         break;
       }
     }
     if (shouldSwitch) {
-      /* If a switch has been marked, make the switch
-      and mark the switch as done: */
       photoContainer.children[i].parentNode.insertBefore(photoContainer.children[i + 1], photoContainer.children[i]);
       switching = true;
     }
