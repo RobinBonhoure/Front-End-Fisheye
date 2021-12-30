@@ -162,12 +162,6 @@ window.addEventListener("keydown", function (event) {
   }
 
   switch (event.key) {
-    case "ArrowDown":
-      // code for "down arrow" key press.
-      break;
-    case "ArrowUp":
-      // code for "up arrow" key press.
-      break;
     case "ArrowLeft":
       // code for "left arrow" key press.
       leftClick = true;
@@ -191,7 +185,9 @@ window.addEventListener("keydown", function (event) {
 // then dispatches event to window
 
 function changePhotoLightbox(value) {
-  const selectedPhotos = arrayPhotographers.media.filter(obj => obj.photographerId == photographerIdUrl);
+  // const selectedPhotos = arrayPhotographers.media.filter(obj => obj.photographerId == photographerIdUrl);
+  const selectedPhotos = document.getElementById("photo-grid");
+  console.log(selectedPhotos,selectedPhotos.children[0])
   if (value) {
     photoIndice = (photoIndice + selectedPhotos.length - 1) % selectedPhotos.length;
   } else {
@@ -325,15 +321,17 @@ function sortTitle() {
 
 // TRI PAR DATES
 function sortDate() {
-  let photoContainer, i, switching, shouldSwitch;
+  let photoContainer, i, switching, shouldSwitch, startTime, endTime;
   photoContainer = document.getElementById("photo-grid");
   switching = true;
   while (switching) {
     switching = false;
     for (i = 0; i < (photoContainer.children.length - 1); i++) {
-      console.log(+photoContainer.children[i].dataset.date,+photoContainer.children[i + 1].dataset.date)
       shouldSwitch = false;
-      if (+photoContainer.children[i].dataset.date > +photoContainer.children[i + 1].dataset.date) {
+      startTime = new Date(photoContainer.children[i].dataset.date);
+      endTime = new Date(photoContainer.children[i + 1].dataset.date);
+      console.log(startTime,endTime)
+      if (+startTime < +endTime) {
         shouldSwitch = true;
         console.log("b")
         break;

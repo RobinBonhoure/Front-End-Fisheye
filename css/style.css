@@ -1,7 +1,10 @@
 @import url("photographer.css");
 
-body {
+* {
     font-family: "DM Sans", sans-serif;
+}
+
+body {
     margin: 0;
 }
 
