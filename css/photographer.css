@@ -369,11 +369,15 @@
     justify-content: space-between;
     padding: 35px;
     margin: auto;
+    max-height: 95vh;
+    overflow: scroll;
 }
 
 .modal header {
     justify-content: space-between;
+    align-items: flex-start!important;
     width: 100%;
+    height: unset;
 }
 
 .modal header img {
@@ -383,7 +387,7 @@
 .modal header h2 {
     font-size: 64px;
     font-weight: normal;
-    text-align: center;
+    margin-top: 0;
 }
 
 form {
@@ -414,5 +418,5 @@ form input {
 }
 
 #message {
-    /* height: 300px; */
+    height: 200px;
 }

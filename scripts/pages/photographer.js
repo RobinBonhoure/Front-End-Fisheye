@@ -20,6 +20,9 @@ async function openNew(photographers, photos) {
   document.getElementById("p1").innerHTML = city + ', ' + country;
   document.getElementById("p2").innerHTML = tagline;
   document.getElementById("img1").src = picturePhotographe;
+  document.getElementById("img1").setAttribute("aria-label", `${name}`);
+  document.getElementById("modalLabelName").textContent = name;
+  document.getElementById("modal-container").setAttribute("aria-label", `Contact me ${name}`);
 
   const photosSection = document.querySelector("#photo-grid");
 
@@ -32,7 +35,6 @@ async function openNew(photographers, photos) {
       const div = document.createElement('div');
       div.className = "imgContainer";
       div.dataset.likes = likes;
-      div.dataset.title = title;
       div.dataset.date = date;
       const pictures = `assets/images/${image || video}`;
       const img = document.createElement('img');
@@ -45,18 +47,27 @@ async function openNew(photographers, photos) {
       p1.textContent = title;
       p1.className = "imgTitle";
       p2.innerHTML = `<span>${likes}</span>`;
-      p2.className = "imgLikes";;
+      p2.className = "imgLikes";
+      p2.setAttribute("aria-label", "likes");
       p2.appendChild(heart);
       if (image) {
         img.setAttribute("src", pictures);
-        img.setAttribute("alt", `Photo ${title}`);
+        img.setAttribute("aria-label", `${title}, closeup view`);
+        img.dataset.title = title;
+        div.dataset.url = image;
+        div.dataset.type = "image";
+        div.dataset.title = title;
         img.dataset.id = id;
         img.className = "photo";
         div.appendChild(img);
       }
       if (video) {
         vid.setAttribute("src", pictures);
-        vid.setAttribute("alt", "Video");
+        vid.setAttribute("aria-label", "Video, closeup view");
+        vid.dataset.title = "Video";
+        div.dataset.url = video;
+        div.dataset.type = "video";
+        div.dataset.title = "Video";
         vid.dataset.id = id;
         vid.className = "photo";
         div.appendChild(vid);
@@ -185,27 +196,26 @@ window.addEventListener("keydown", function (event) {
 // then dispatches event to window
 
 function changePhotoLightbox(value) {
-  // const selectedPhotos = arrayPhotographers.media.filter(obj => obj.photographerId == photographerIdUrl);
+  // CHANGE LES PHOTOS EN REGARDANT CELLE AFFICHEES (RESPECTE LE TRI)
   const selectedPhotos = document.getElementById("photo-grid");
-  console.log(selectedPhotos,selectedPhotos.children[0])
   if (value) {
-    photoIndice = (photoIndice + selectedPhotos.length - 1) % selectedPhotos.length;
+    photoIndice = (photoIndice + selectedPhotos.children.length - 1) % selectedPhotos.children.length;
   } else {
-    photoIndice = (photoIndice + selectedPhotos.length + 1) % selectedPhotos.length;
+    photoIndice = (photoIndice + selectedPhotos.children.length + 1) % selectedPhotos.children.length;
   }
-  if ((selectedPhotos[photoIndice].image) !== (undefined && null)) {
+  // console.log(photoIndice,selectedPhotos.children[photoIndice])
+  lightboxTitle.textContent = selectedPhotos.children[photoIndice].dataset.title;
+  if ((selectedPhotos.children[photoIndice].dataset.type) === "image") {
+    lightboxPhoto.src = `assets/images/${selectedPhotos.children[photoIndice].dataset.url}`;
+    lightboxPhoto.setAttribute("aria-label", `${selectedPhotos.children[photoIndice].dataset.title}`);
     lightboxVideo.style.display = "none";
     lightboxPhoto.style.display = "initial";
-    lightboxTitle.textContent = selectedPhotos[photoIndice].title;
-    urlPhoto = selectedPhotos[photoIndice].image;
-    lightboxPhoto.src = `assets/images/${urlPhoto}`;
   }
-  if ((selectedPhotos[photoIndice].video) !== (undefined && null)) {
+  if ((selectedPhotos.children[photoIndice].dataset.type) === "video") {
+    lightboxVideo.src = `assets/images/${selectedPhotos.children[photoIndice].dataset.url}`;
+    lightboxVideo.setAttribute("aria-label", `${selectedPhotos.children[photoIndice].dataset.title}`);
     lightboxVideo.style.display = "initial";
     lightboxPhoto.style.display = "none";
-    lightboxTitle.textContent = "";
-    urlVideo = selectedPhotos[photoIndice].video;
-    lightboxVideo.src = `assets/images/${urlVideo}`;
   }
 }
 
@@ -216,30 +226,57 @@ async function lightBox() {
     classPhoto.addEventListener("click", function () {
       // src de la photo target
       const photoId = this.dataset.id;
-      const selectedPhotos = arrayPhotographers.media.filter(obj => obj.photographerId == photographerIdUrl);
-      let urlPhoto;
-      let urlVideo;
+      // const selectedPhotos = arrayPhotographers.media.filter(obj => obj.photographerId == photographerIdUrl);
+      const selectedPhotos = document.getElementById("photo-grid");
+      console.log(photoId, selectedPhotos.children[0].dataset.id)
+      // let urlPhoto;
+      // let urlVideo;
 
       // find the good photo
-      for (let i = 0; i < selectedPhotos.length; i++) {
-        if (selectedPhotos[i].id === eval(photoId)) {
-          urlPhoto = selectedPhotos[i].image;
+      // for (let i = 0; i < selectedPhotos.length; i++) {
+      //   if (selectedPhotos[i].id === eval(photoId)) {
+      //     urlPhoto = selectedPhotos[i].image;
+      //     photoIndice = i;
+      //     // show photo
+      //     if ((selectedPhotos[photoIndice].image) !== (undefined && null)) {
+      //       lightboxVideo.style.display = "none";
+      //       lightboxPhoto.style.display = "initial";
+      //       lightboxTitle.textContent = selectedPhotos[photoIndice].title;
+      //       lightboxPhoto.setAttribute("aria-label", `${selectedPhotos[photoIndice].title}`);
+      //       urlPhoto = selectedPhotos[photoIndice].image;
+      //       lightboxPhoto.src = `assets/images/${urlPhoto}`;
+      //     }
+      //     // showvideo
+      //     if ((selectedPhotos[photoIndice].video) !== (undefined && null)) {
+      //       lightboxVideo.style.display = "initial";
+      //       lightboxPhoto.style.display = "none";
+      //       lightboxTitle.textContent = "";
+      //       urlVideo = selectedPhotos[photoIndice].video;
+      //       lightboxVideo.src = `assets/images/${urlVideo}`;
+      //     }
+      //   }
+      // }
+
+
+
+      console.log(this.parentNode.children,Array.from(this.parentNode.children).indexOf(this),this)
+
+      for (let i = 0; i < selectedPhotos.children.length; i++) {
+        if (selectedPhotos.children[i].dataset.id === eval(photoId)) {
           photoIndice = i;
           // show photo
-          if ((selectedPhotos[photoIndice].image) !== (undefined && null)) {
+          lightboxTitle.textContent = selectedPhotos.children[photoIndice].dataset.title;
+          if ((selectedPhotos.children[photoIndice].dataset.type) === "image") {
+            lightboxPhoto.src = `assets/images/${selectedPhotos.children[photoIndice].dataset.url}`;
+            lightboxPhoto.setAttribute("aria-label", `${selectedPhotos.children[photoIndice].dataset.title}`);
             lightboxVideo.style.display = "none";
             lightboxPhoto.style.display = "initial";
-            lightboxTitle.textContent = selectedPhotos[photoIndice].title;
-            urlPhoto = selectedPhotos[photoIndice].image;
-            lightboxPhoto.src = `assets/images/${urlPhoto}`;
           }
-          // showvideo
-          if ((selectedPhotos[photoIndice].video) !== (undefined && null)) {
+          if ((selectedPhotos.children[photoIndice].dataset.type) === "video") {
+            lightboxVideo.src = `assets/images/${selectedPhotos.children[photoIndice].dataset.url}`;
+            lightboxVideo.setAttribute("aria-label", `${selectedPhotos.children[photoIndice].dataset.title}`);
             lightboxVideo.style.display = "initial";
             lightboxPhoto.style.display = "none";
-            lightboxTitle.textContent = "";
-            urlVideo = selectedPhotos[photoIndice].video;
-            lightboxVideo.src = `assets/images/${urlVideo}`;
           }
         }
       }
@@ -330,7 +367,7 @@ function sortDate() {
       shouldSwitch = false;
       startTime = new Date(photoContainer.children[i].dataset.date);
       endTime = new Date(photoContainer.children[i + 1].dataset.date);
-      console.log(startTime,endTime)
+      console.log(startTime, endTime)
       if (+startTime < +endTime) {
         shouldSwitch = true;
         console.log("b")

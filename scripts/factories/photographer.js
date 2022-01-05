@@ -7,8 +7,8 @@ function photographerFactory(data) {
         const article = document.createElement( 'article' );
         const img = document.createElement( 'img' );
         img.setAttribute("src", picture);
-        img.setAttribute("alt",  `Photographe ${name}`);
-        img.setAttribute("aria-label",  `Photographe ${name}`);
+        img.setAttribute("alt",  `${name}`);
+        img.setAttribute("aria-label",  `${name}`);
         img.dataset.id = id;
         img.className = "showPhotos";
         const h2 = document.createElement( 'h2' );

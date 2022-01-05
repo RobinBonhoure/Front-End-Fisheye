@@ -11,7 +11,7 @@
 
 <body>
   <header>
-    <img src="assets/images/logo.png" class="logo" />
+    <img alt="Fisheye Home page" src="assets/images/logo.png" class="logo" />
   </header>
   <main id="main">
     <div class="photograph-header">
@@ -20,19 +20,19 @@
         <p id="p1" class="p1"></p>
         <p id="p2" class="p2"></p>
       </div>
-      <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+      <button aria-label="Contact me" class="contact_button" onclick="displayModal()">Contactez-moi</button>
       <img id="img1" class="img1" src="" alt="">
     </div>
     <!-- TRI -->
     <div class="trier">
-      <label for="tri">Trier par</label>
+      <label id="order-button" for="tri">Trier par</label>
       <div class="dropdown">
-        <button id="dropbtn" onclick="dropdownShow()" class="dropbtn">Popularité</button>
+        <button aria-labelledby="order-button" aria-label="Order by" id="dropbtn" onclick="dropdownShow()" onfocus="dropdownShow()" class="dropbtn">Popularité</button>
         <div id="dropdownArrow" class="dropdownArrow"></div>
         <div id="myDropdown" class="dropdown-content">
-          <p class="dropdownItem dropdownFirstItem">Popularité</p>
-          <p class="dropdownItem">Date</p>
-          <p class="dropdownItem">Titre</p>
+          <p aria-label="Order by popularity" onkeypress="sortLikes()" tabindex="0" class="dropdownItem dropdownFirstItem">Popularité</p>
+          <p aria-label="Order by time" onkeypress="sortDate()" tabindex="0" class="dropdownItem">Date</p>
+          <p aria-label="Order by title" onkeypress="sortTitle()" tabindex="0" class="dropdownItem">Titre</p>
         </div>
       </div>
     </div>
@@ -47,45 +47,45 @@
     </div>
   </main>
   <!-- LIGHTBOX -->
-  <div id="lightbox" class="lightbox">
-    <div id="lightbox-left" class="lightbox-arrow">
+  <div aria-label="image closeup view" id="lightbox" class="lightbox">
+    <div aria-label="Previous image" id="lightbox-left" class="lightbox-arrow">
       <img src="assets/icons/arrow-left.svg" alt="">
     </div>
     <img src="" id="lightbox-photo" class="lightbox-photo" alt="">
     <video src="" id="lightbox-video" class="lightbox-video" controls></video>
-    <div id="lightbox-right" class="lightbox-arrow">
+    <div aria-label="Next image" id="lightbox-right" class="lightbox-arrow">
       <img src="assets/icons/arrow-right.svg" alt="">
     </div>
-    <div id="lightbox-close" class="lightbox-close">
+    <div aria-label="Close dialog" id="lightbox-close" class="lightbox-close">
       <img src="assets/icons/close.svg" alt="">
     </div>
     <div id="lightbox-title" class="lightbox-title">lalal</div>
   </div>
   <!-- MODAL -->
   <div id="contact_modal">
-    <div class="modal">
+    <div id="modal-container" aria-label="" class="modal">
       <header>
-        <h2>Contactez-moi</h2>
-        <img src="assets/icons/close-white.svg" onclick="closeModal()" />
+        <h2 id="modalLabel">Contactez-moi<br><span id="modalLabelName"></span></h2>
+        <img aria-label="Close Contact form" src="assets/icons/close-white.svg" onclick="closeModal()" />
       </header>
       <form id="contactForm" name="contactForm" action="photographer.html" method="get" onsubmit="validate(event);">
         <div class="formData">
-          <label for="first">Prénom</label><br>
-          <input class="text-control" id="first" name="first" /><br>
+          <label id="firstLabel" aria-label="First name" for="first">Prénom</label><br>
+          <input aria-labelledby="firstLabel" class="text-control" id="first" name="first" /><br>
         </div>
         <div class="formData">
-          <label for="last">Nom</label><br>
-          <input class="text-control" id="last" name="last" /><br>
+          <label id="lastLabel" aria-label="Last name" for="last">Nom</label><br>
+          <input aria-labelledby="lastLabel" class="text-control" id="last" name="last" /><br>
         </div>
         <div class="formData">
-          <label for="email">Email</label><br>
-          <input class="text-control" id="email" name="email" /><br>
+          <label id="emailLabel" aria-label="Email" for="email">Email</label><br>
+          <input aria-labelledby="emailLabel" class="text-control" id="email" name="email" /><br>
         </div>
         <div class="formData">
-          <label for="message">Votre message</label><br>
-          <input class="text-control" id="message" name="message" /><br>
+          <label id="messageLabel" aria-label="Your message" for="message">Votre message</label><br>
+          <input aria-labelledby="messageLabel" class="text-control" id="message" name="message" /><br>
         </div>
-        <input class="btn-submit contact_button" type="submit" class="button" value="Envoyer" />
+        <input aria-label="Send" class="btn-submit contact_button" type="submit" class="button" value="Envoyer" />
       </form>
     </div>
   </div>
