@@ -197,12 +197,17 @@ window.addEventListener("keydown", function (event) {
 
 function changePhotoLightbox(value) {
   // CHANGE LES PHOTOS EN REGARDANT CELLE AFFICHEES (RESPECTE LE TRI)
-  const selectedPhotos = document.getElementById("photo-grid");
+  let selectedPhotos = document.getElementById("photo-grid");
+  // for (i = 0; i < (selectedPhotos.children.length); i++) {
+  // console.log(selectedPhotos.children[i])
+  // }
+
   if (value) {
     photoIndice = (photoIndice + selectedPhotos.children.length - 1) % selectedPhotos.children.length;
   } else {
     photoIndice = (photoIndice + selectedPhotos.children.length + 1) % selectedPhotos.children.length;
   }
+  console.log(photoIndice)
   // console.log(photoIndice,selectedPhotos.children[photoIndice])
   lightboxTitle.textContent = selectedPhotos.children[photoIndice].dataset.title;
   if ((selectedPhotos.children[photoIndice].dataset.type) === "image") {
@@ -221,68 +226,27 @@ function changePhotoLightbox(value) {
 
 // open the lightbox
 async function lightBox() {
-  const classPhotos = document.querySelectorAll(".photo");
+  let classPhotos = document.querySelectorAll(".photo");
   classPhotos.forEach((classPhoto) => {
     classPhoto.addEventListener("click", function () {
-      // src de la photo target
-      const photoId = this.dataset.id;
-      // const selectedPhotos = arrayPhotographers.media.filter(obj => obj.photographerId == photographerIdUrl);
-      const selectedPhotos = document.getElementById("photo-grid");
-      console.log(photoId, selectedPhotos.children[0].dataset.id)
-      // let urlPhoto;
-      // let urlVideo;
+      let selectedPhotos = document.getElementById("photo-grid");
 
-      // find the good photo
-      // for (let i = 0; i < selectedPhotos.length; i++) {
-      //   if (selectedPhotos[i].id === eval(photoId)) {
-      //     urlPhoto = selectedPhotos[i].image;
-      //     photoIndice = i;
-      //     // show photo
-      //     if ((selectedPhotos[photoIndice].image) !== (undefined && null)) {
-      //       lightboxVideo.style.display = "none";
-      //       lightboxPhoto.style.display = "initial";
-      //       lightboxTitle.textContent = selectedPhotos[photoIndice].title;
-      //       lightboxPhoto.setAttribute("aria-label", `${selectedPhotos[photoIndice].title}`);
-      //       urlPhoto = selectedPhotos[photoIndice].image;
-      //       lightboxPhoto.src = `assets/images/${urlPhoto}`;
-      //     }
-      //     // showvideo
-      //     if ((selectedPhotos[photoIndice].video) !== (undefined && null)) {
-      //       lightboxVideo.style.display = "initial";
-      //       lightboxPhoto.style.display = "none";
-      //       lightboxTitle.textContent = "";
-      //       urlVideo = selectedPhotos[photoIndice].video;
-      //       lightboxVideo.src = `assets/images/${urlVideo}`;
-      //     }
-      //   }
-      // }
-
-
-
-      console.log(this.parentNode.children,Array.from(this.parentNode.children).indexOf(this),this)
-
-      for (let i = 0; i < selectedPhotos.children.length; i++) {
-        if (selectedPhotos.children[i].dataset.id === eval(photoId)) {
-          photoIndice = i;
-          // show photo
-          lightboxTitle.textContent = selectedPhotos.children[photoIndice].dataset.title;
-          if ((selectedPhotos.children[photoIndice].dataset.type) === "image") {
-            lightboxPhoto.src = `assets/images/${selectedPhotos.children[photoIndice].dataset.url}`;
-            lightboxPhoto.setAttribute("aria-label", `${selectedPhotos.children[photoIndice].dataset.title}`);
-            lightboxVideo.style.display = "none";
-            lightboxPhoto.style.display = "initial";
-          }
-          if ((selectedPhotos.children[photoIndice].dataset.type) === "video") {
-            lightboxVideo.src = `assets/images/${selectedPhotos.children[photoIndice].dataset.url}`;
-            lightboxVideo.setAttribute("aria-label", `${selectedPhotos.children[photoIndice].dataset.title}`);
-            lightboxVideo.style.display = "initial";
-            lightboxPhoto.style.display = "none";
-          }
-        }
+      let index = Array.prototype.indexOf.call(this.parentNode.parentNode.children, this.parentNode);
+      photoIndice = index;
+      // show photo
+      lightboxTitle.textContent = selectedPhotos.children[photoIndice].dataset.title;
+      if ((selectedPhotos.children[photoIndice].dataset.type) === "image") {
+        lightboxPhoto.src = `assets/images/${selectedPhotos.children[photoIndice].dataset.url}`;
+        lightboxPhoto.setAttribute("aria-label", `${selectedPhotos.children[photoIndice].dataset.title}`);
+        lightboxVideo.style.display = "none";
+        lightboxPhoto.style.display = "initial";
       }
-
-      // show lightbox
-      // lightboxPhoto.src = `assets/images/${urlPhoto}`;
+      if ((selectedPhotos.children[photoIndice].dataset.type) === "video") {
+        lightboxVideo.src = `assets/images/${selectedPhotos.children[photoIndice].dataset.url}`;
+        lightboxVideo.setAttribute("aria-label", `${selectedPhotos.children[photoIndice].dataset.title}`);
+        lightboxVideo.style.display = "initial";
+        lightboxPhoto.style.display = "none";
+      }
       lightbox.style.display = "flex";
     });
   });
@@ -292,7 +256,23 @@ async function lightBox() {
 // DROPDOWN
 /* When the user clicks on the button,
 toggle between hiding and showing the dropdown content */
-function dropdownShow() {
+let isFocusDropDown = false;
+let isClickDropDown = false;
+function dropdownShowFocus() {
+  if (isClickDropDown) {
+    isFocusDropDown = false;
+    return
+  }
+  isFocusDropDown = true;
+  document.getElementById("myDropdown").classList.toggle("show");
+  document.getElementById("dropbtn").classList.toggle("active");
+}
+function dropdownShowClick() {
+  if (isFocusDropDown) {
+    isClickDropDown = false;
+    return
+  }
+  isClickDropDown = true;
   document.getElementById("myDropdown").classList.toggle("show");
   document.getElementById("dropbtn").classList.toggle("active");
 }
@@ -354,6 +334,9 @@ function sortTitle() {
       switching = true;
     }
   }
+  for (i = 0; i < (photoContainer.children.length - 1); i++) {
+    console.log(photoContainer.children[i])
+  }
 }
 
 // TRI PAR DATES
@@ -367,10 +350,8 @@ function sortDate() {
       shouldSwitch = false;
       startTime = new Date(photoContainer.children[i].dataset.date);
       endTime = new Date(photoContainer.children[i + 1].dataset.date);
-      console.log(startTime, endTime)
       if (+startTime < +endTime) {
         shouldSwitch = true;
-        console.log("b")
         break;
       }
     }
@@ -378,6 +359,9 @@ function sortDate() {
       photoContainer.children[i].parentNode.insertBefore(photoContainer.children[i + 1], photoContainer.children[i]);
       switching = true;
     }
+  }
+  for (i = 0; i < (photoContainer.children.length - 1); i++) {
+    console.log(photoContainer.children[i])
   }
 }
 
@@ -400,5 +384,8 @@ function sortLikes() {
       photoContainer.children[i].parentNode.insertBefore(photoContainer.children[i + 1], photoContainer.children[i]);
       switching = true;
     }
+  }
+  for (i = 0; i < (photoContainer.children.length - 1); i++) {
+    console.log(photoContainer.children[i])
   }
 }

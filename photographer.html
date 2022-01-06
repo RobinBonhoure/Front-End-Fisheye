@@ -11,7 +11,7 @@
 
 <body>
   <header>
-    <img alt="Fisheye Home page" src="assets/images/logo.png" class="logo" />
+    <a href="./index.html"><img alt="Fisheye Home page" src="assets/images/logo.png" class="logo" /></a>
   </header>
   <main id="main">
     <div class="photograph-header">
@@ -27,7 +27,7 @@
     <div class="trier">
       <label id="order-button" for="tri">Trier par</label>
       <div class="dropdown">
-        <button aria-labelledby="order-button" aria-label="Order by" id="dropbtn" onclick="dropdownShow()" onfocus="dropdownShow()" class="dropbtn">Popularité</button>
+        <button aria-labelledby="order-button" aria-label="Order by" id="dropbtn" onclick="dropdownShowClick()" onfocus="dropdownShowFocus()" class="dropbtn">Popularité</button>
         <div id="dropdownArrow" class="dropdownArrow"></div>
         <div id="myDropdown" class="dropdown-content">
           <p aria-label="Order by popularity" onkeypress="sortLikes()" tabindex="0" class="dropdownItem dropdownFirstItem">Popularité</p>
