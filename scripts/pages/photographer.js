@@ -11,7 +11,6 @@ async function openNew(photographers, photos) {
 
   // photos du photographe
   const selectedPhotos = photos.filter(obj => obj.photographerId == photographerIdUrl);
-  console.log(selectedPhotos)
 
   const picturePhotographe = `assets/photographers/${portrait}`;
 
@@ -54,6 +53,8 @@ async function openNew(photographers, photos) {
         img.setAttribute("src", pictures);
         img.setAttribute("aria-label", `${title}, closeup view`);
         img.dataset.title = title;
+        img.setAttribute("tabindex",  0);
+        img.setAttribute("onkeypress",  "openPictureInLightBox(this)");
         div.dataset.url = image;
         div.dataset.type = "image";
         div.dataset.title = title;
@@ -65,6 +66,8 @@ async function openNew(photographers, photos) {
         vid.setAttribute("src", pictures);
         vid.setAttribute("aria-label", "Video, closeup view");
         vid.dataset.title = "Video";
+        vid.setAttribute("tabindex",  0);
+        vid.setAttribute("onkeypress",  "openPictureInLightBox(this)");
         div.dataset.url = video;
         div.dataset.type = "video";
         div.dataset.title = "Video";
@@ -104,15 +107,15 @@ async function getPhotos() {
   return (arrayPhotographers)
 }
 
-async function displayData2() {
+async function displayData() {
   const photographeHeader = document.querySelector(".photographe-header");
   openNew(arrayPhotographers.photographers, arrayPhotographers.media);
 };
 
-async function init2() {
+async function init() {
   // Récupère les datas des photographes
   const { photos } = await getPhotos();
-  displayData2();
+  displayData();
   // check if photos are in the DOM
   let checkExist = setInterval(function () {
     if (document.querySelectorAll('.photo').length && document.querySelectorAll('.imgLikes').length) {
@@ -123,10 +126,9 @@ async function init2() {
   }, 100);
 };
 
-init2();
+init();
 
 // INCREMENT LIKES
-
 async function likesCounter() {
   let imgLikesCounter = document.querySelectorAll('.imgLikes');
 
@@ -207,8 +209,7 @@ function changePhotoLightbox(value) {
   } else {
     photoIndice = (photoIndice + selectedPhotos.children.length + 1) % selectedPhotos.children.length;
   }
-  console.log(photoIndice)
-  // console.log(photoIndice,selectedPhotos.children[photoIndice])
+  
   lightboxTitle.textContent = selectedPhotos.children[photoIndice].dataset.title;
   if ((selectedPhotos.children[photoIndice].dataset.type) === "image") {
     lightboxPhoto.src = `assets/images/${selectedPhotos.children[photoIndice].dataset.url}`;
@@ -229,53 +230,48 @@ async function lightBox() {
   let classPhotos = document.querySelectorAll(".photo");
   classPhotos.forEach((classPhoto) => {
     classPhoto.addEventListener("click", function () {
-      let selectedPhotos = document.getElementById("photo-grid");
-
-      let index = Array.prototype.indexOf.call(this.parentNode.parentNode.children, this.parentNode);
-      photoIndice = index;
-      // show photo
-      lightboxTitle.textContent = selectedPhotos.children[photoIndice].dataset.title;
-      if ((selectedPhotos.children[photoIndice].dataset.type) === "image") {
-        lightboxPhoto.src = `assets/images/${selectedPhotos.children[photoIndice].dataset.url}`;
-        lightboxPhoto.setAttribute("aria-label", `${selectedPhotos.children[photoIndice].dataset.title}`);
-        lightboxVideo.style.display = "none";
-        lightboxPhoto.style.display = "initial";
-      }
-      if ((selectedPhotos.children[photoIndice].dataset.type) === "video") {
-        lightboxVideo.src = `assets/images/${selectedPhotos.children[photoIndice].dataset.url}`;
-        lightboxVideo.setAttribute("aria-label", `${selectedPhotos.children[photoIndice].dataset.title}`);
-        lightboxVideo.style.display = "initial";
-        lightboxPhoto.style.display = "none";
-      }
-      lightbox.style.display = "flex";
+      openPictureInLightBox(this);
     });
   });
+}
+
+function openPictureInLightBox(item) {
+  let selectedPhotos = document.getElementById("photo-grid");
+
+  let index = Array.prototype.indexOf.call(item.parentNode.parentNode.children, item.parentNode);
+  photoIndice = index;
+  // show photo
+  lightboxTitle.textContent = selectedPhotos.children[photoIndice].dataset.title;
+  if ((selectedPhotos.children[photoIndice].dataset.type) === "image") {
+    lightboxPhoto.src = `assets/images/${selectedPhotos.children[photoIndice].dataset.url}`;
+    lightboxPhoto.setAttribute("aria-label", `${selectedPhotos.children[photoIndice].dataset.title}`);
+    lightboxVideo.style.display = "none";
+    lightboxPhoto.style.display = "initial";
+  }
+  if ((selectedPhotos.children[photoIndice].dataset.type) === "video") {
+    lightboxVideo.src = `assets/images/${selectedPhotos.children[photoIndice].dataset.url}`;
+    lightboxVideo.setAttribute("aria-label", `${selectedPhotos.children[photoIndice].dataset.title}`);
+    lightboxVideo.style.display = "initial";
+    lightboxPhoto.style.display = "none";
+  }
+  lightbox.style.display = "flex";
 }
 
 
 // DROPDOWN
 /* When the user clicks on the button,
 toggle between hiding and showing the dropdown content */
-let isFocusDropDown = false;
-let isClickDropDown = false;
-function dropdownShowFocus() {
-  if (isClickDropDown) {
-    isFocusDropDown = false;
-    return
-  }
-  isFocusDropDown = true;
-  document.getElementById("myDropdown").classList.toggle("show");
-  document.getElementById("dropbtn").classList.toggle("active");
+let dropbtn = document.getElementById("dropbtn");
+let myDropdown = document.getElementById("myDropdown");
+let dropdownItem = document.getElementsByClassName("dropdownItem");
+console.log(dropdownItem)
+
+function dropdownShow() {
+  myDropdown.classList.toggle("show");
+  dropbtn.classList.toggle("active");
 }
-function dropdownShowClick() {
-  if (isFocusDropDown) {
-    isClickDropDown = false;
-    return
-  }
-  isClickDropDown = true;
-  document.getElementById("myDropdown").classList.toggle("show");
-  document.getElementById("dropbtn").classList.toggle("active");
-}
+
+dropbtn.addEventListener('click', dropdownShow);
 
 // Close the dropdown menu if the user clicks outside of it
 window.onclick = function (event) {

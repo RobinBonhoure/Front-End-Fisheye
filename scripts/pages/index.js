@@ -43,14 +43,18 @@ async function init() {
 
     buttons.forEach((btn) => {
         btn.addEventListener("click", function () {
-            let targetClick = this.getAttribute("data-id");
-
-            window.location='./photographer.html?id='+targetClick;
+            openPhotographerPage(this);
         });
     });
 };
 
 init();
+
+function openPhotographerPage(item) {
+    let targetClick = item.getAttribute("data-id");
+
+    window.location='./photographer.html?id='+targetClick;
+}
 
 
 // CHANGE PAGE

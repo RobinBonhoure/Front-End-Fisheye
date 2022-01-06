@@ -9,6 +9,8 @@ function photographerFactory(data) {
         img.setAttribute("src", picture);
         img.setAttribute("alt",  `${name}`);
         img.setAttribute("aria-label",  `${name}`);
+        img.setAttribute("tabindex",  0);
+        img.setAttribute("onkeypress",  "openPhotographerPage(this)");
         img.dataset.id = id;
         img.className = "showPhotos";
         const h2 = document.createElement( 'h2' );

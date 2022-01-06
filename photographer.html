@@ -27,12 +27,12 @@
     <div class="trier">
       <label id="order-button" for="tri">Trier par</label>
       <div class="dropdown">
-        <button aria-labelledby="order-button" aria-label="Order by" id="dropbtn" onclick="dropdownShowClick()" onfocus="dropdownShowFocus()" class="dropbtn">Popularité</button>
+        <button aria-labelledby="order-button" aria-label="Order by" id="dropbtn" class="dropbtn">Popularité</button>
         <div id="dropdownArrow" class="dropdownArrow"></div>
         <div id="myDropdown" class="dropdown-content">
-          <p aria-label="Order by popularity" onkeypress="sortLikes()" tabindex="0" class="dropdownItem dropdownFirstItem">Popularité</p>
-          <p aria-label="Order by time" onkeypress="sortDate()" tabindex="0" class="dropdownItem">Date</p>
-          <p aria-label="Order by title" onkeypress="sortTitle()" tabindex="0" class="dropdownItem">Titre</p>
+          <p aria-label="Order by popularity" onkeypress="sortLikes(), dropdownShow()" tabindex="0" class="dropdownItem dropdownFirstItem">Popularité</p>
+          <p aria-label="Order by time" onkeypress="sortDate(), dropdownShow()" tabindex="0" class="dropdownItem">Date</p>
+          <p aria-label="Order by title" onkeypress="sortTitle(), dropdownShow()" tabindex="0" class="dropdownItem">Titre</p>
         </div>
       </div>
     </div>

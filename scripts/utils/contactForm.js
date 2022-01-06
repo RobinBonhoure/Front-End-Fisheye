@@ -151,18 +151,22 @@ function closeModal() {
     modal.style.display = "none";
 }
 
-// close validation message
-// closeModalButton.addEventListener('click', function () {
-//     validation.style.display = "none";
-// })
-// crossValidate.addEventListener('click', function () {
-//     validation.style.display = "none";
-// })
+// ACCESSIBILITE
 
-// close modal form
-// function closeModal() {
-//     modalbg.style.display = "none";
-// }
+// CHANGE WITH KEYBOARD
+window.addEventListener("keydown", function (event) {
+    if (event.defaultPrevented) {
+      return;
+    }
+  
+    switch (event.key) {
+      case "Escape":
+        const modal = document.getElementById("contact_modal");
+        modal.style.display = "none";
+      default:
+        return;
+    }
+  }, true);
 
 
 
